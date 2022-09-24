@@ -1,6 +1,7 @@
 const body = document.querySelector('body');
 const btnSave = document.querySelector('.btn-save');
 const btnClose = document.querySelector('.btn-close');
+const overlayNotify = document.querySelector('.overlay-notify');
 
 const title = document.querySelector('#title');
 const text = document.querySelector('#text')
@@ -8,16 +9,18 @@ const text = document.querySelector('#text')
 body.hidden = true;
 
 window.addEventListener('message', function(event) {
+  // On close
   if (event.data.hidden != undefined) {
     body.hidden = event.data.hidden
     return true;
   };
 
+  // On save
   if (event.data.done != undefined) {
-    title.value = '';
-    text.value = '';
-    
-    // TODO: add visual feedback
+    showOverlayNotify(() => {
+      title.value = '';
+      text.value = '';
+    });
 
     return true;
   }
@@ -46,4 +49,15 @@ function handleButtonClose(event) {
       'Content-Type': 'application/json; charset=UTF-8',
     }
   });
+}
+
+// Show out overlay notify
+function showOverlayNotify(callback) {
+  overlayNotify.style.display = 'flex';
+  setTimeout(function() {
+    overlayNotify.style.animationDirection = 'reverse';
+    overlayNotify.style.display = 'none';
+
+    callback()
+  }, 5000);
 }
