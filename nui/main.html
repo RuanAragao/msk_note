@@ -1,108 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    .gui-wrapper {
-      display: flex;
-      background: #fcf9ff;
-      padding: 10px;
-      width: 200px;
-      position: absolute;
-      right: 30px;
-      top: 20%;
-      flex-direction: column;
-      border-radius: 8px;
-      font-family: sans-serif;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-    }
-
-    .gui-wrapper h1 {
-      font-size: 22px;
-      text-align: center;
-    }
-
-    .gui-wrapper #title {
-      width: 100%;
-      border-bottom: solid 1px lightblue;	
-      outline: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
-      background-color:#fcf9ff;
-    }
-
-    .gui-wrapper #text {
-      width: 100%;
-      outline: none;
-      border: none;
-      resize: none;
-      background-color: #fcf9ff;
-      background-image: url('images/line.svg');
-      background-attachment: scroll;
-    }
-  </style>
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
   <div class="gui-wrapper">
     <h1>Bloco de notas</h1>
-    <input type="text" id="title" placeholder="Titulo">
+    <input type="text" id="title" placeholder="Titulo (opcional)">
     <div>
       <textarea id="text" rows="10" placeholder="Sua anotação"></textarea>
     </div>
-    <button class="btn-close">Fechar</button>
-    <button class="btn-save">✔ Salvar</button>
+    <div class="buttons-wrapper">
+      <button class="btn btn-close">Fechar</button>
+      <button class="btn btn-save">✔ Salvar</button>
+    </div>
+
+    <div class="overlay-notify">
+      <svg class="icon-success" width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M38 0.666672C30.6162 0.666672 23.3981 2.85623 17.2587 6.95847C11.1193 11.0607 6.33417 16.8914 3.5085 23.7132C0.682825 30.5349 -0.0564998 38.0414 1.38402 45.2834C2.82453 52.5253 6.38019 59.1775 11.6013 64.3987C16.8225 69.6198 23.4747 73.1755 30.7166 74.616C37.9586 76.0565 45.4651 75.3172 52.2869 72.4915C59.1086 69.6658 64.9393 64.8807 69.0415 58.7413C73.1438 52.6019 75.3333 45.3838 75.3333 38C75.3333 28.0986 71.4 18.6027 64.3987 11.6014C57.3973 4.59999 47.9014 0.666672 38 0.666672V0.666672ZM38 70.6667C31.5391 70.6667 25.2234 68.7508 19.8514 65.1614C14.4794 61.5719 10.2924 56.4701 7.81994 50.501C5.34747 44.5319 4.70056 37.9638 5.96101 31.6271C7.22146 25.2903 10.3327 19.4697 14.9012 14.9012C19.4697 10.3327 25.2903 7.22147 31.6271 5.96102C37.9638 4.70057 44.5319 5.34748 50.501 7.81994C56.4701 10.2924 61.5719 14.4794 65.1613 19.8514C68.7508 25.2234 70.6667 31.5392 70.6667 38C70.6667 46.6637 67.225 54.9726 61.0988 61.0988C54.9726 67.225 46.6637 70.6667 38 70.6667Z" fill="#0097C8"/>
+        <path d="M61.3333 24.2333C60.8962 23.7987 60.3048 23.5548 59.6883 23.5548C59.0719 23.5548 58.4805 23.7987 58.0433 24.2333L32.1433 50.0167L18.1433 36.0167C17.7163 35.5556 17.1237 35.2831 16.4957 35.259C15.8678 35.235 15.256 35.4613 14.795 35.8883C14.334 36.3153 14.0614 36.908 14.0374 37.5359C14.0133 38.1638 14.2397 38.7756 14.6667 39.2367L32.1433 56.6667L61.3333 27.5467C61.552 27.3297 61.7256 27.0717 61.8441 26.7873C61.9625 26.503 62.0235 26.198 62.0235 25.89C62.0235 25.582 61.9625 25.277 61.8441 24.9926C61.7256 24.7083 61.552 24.4502 61.3333 24.2333Z" fill="#0097C8"/>
+      </svg>
+      <h2>Salvo!</h2>
+    </div>
   </div>
 
-  <script>
-    const body = document.querySelector('body');
-    const btnSave = document.querySelector('.btn-save');
-    const btnClose = document.querySelector('.btn-close');
-
-    const title = document.querySelector('#title');
-    const text = document.querySelector('#text')
-
-    body.hidden = true;
-    
-    window.addEventListener('message', function(event) {
-      if (event.data.hidden != undefined) {
-        body.hidden = event.data.hidden
-        return true;
-      };
-
-      if (event.data.done != undefined) {
-        title.value = '';
-        text.value = '';
-        
-        // TODO: add visual feedback
-
-        return true;
-      }
-    });
-
-    btnSave.addEventListener('click', handleButtonSave);
-    btnClose.addEventListener('click', handleButtonClose);
-
-    function handleButtonSave(event) {
-      fetch(`https://${GetParentResourceName()}/save`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify({
-          title: title.value,
-          text: text.value
-        })
-      }).then(resp => resp.json()).then(resp => console.log(resp));
-    }
-
-    function handleButtonClose(event) {
-      fetch(`https://${GetParentResourceName()}/close`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        }
-      });
-    }
-  </script>
+  <script defer src="js/main.js" type="text/javascript"></script>
 </body>
 </html>

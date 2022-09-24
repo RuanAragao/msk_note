@@ -1,0 +1,122 @@
+.gui-wrapper {
+  display: flex;
+  background: #fcf9ff;
+  padding: 10px;
+  width: 200px;
+  position: absolute;
+  right: 30px;
+  top: 20%;
+  flex-direction: column;
+  border-radius: 8px;
+  font-family: sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.gui-wrapper h1 {
+  font-size: 22px;
+  text-align: center;
+}
+
+.gui-wrapper #title {
+  width: 100%;
+  border-bottom: solid 2px lightblue;	
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background-color:#fcf9ff;
+}
+
+.gui-wrapper #text {
+  width: 100%;
+  outline: none;
+  border: none;
+  resize: none;
+  line-height: 1.7;
+  background-color: #fcf9ff;
+  background-image: url('../images/line.svg');
+  background-attachment: scroll;
+}
+
+.btn {
+  box-sizing: border-box;
+
+  background: rgba(0, 151, 200, 0.1);
+  border: 1px solid #0097C8;
+  border-radius: 4px;
+  cursor: pointer;
+
+  padding: 6px auto;
+}
+.btn:hover,
+.btn:focus {
+  opacity: 0.7;
+}
+
+.btn.btn-close {
+  background: rgba(0, 151, 200, 0.2);
+  border: 1px solid #0097C8;
+  color: #037296;
+}
+
+.btn.btn-save {
+  background: #0097C8;
+  border: 1px solid #0097C8;
+  color: #FFFFFF;
+}
+
+.buttons-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.overlay-notify {
+  color: #0097C8;
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 8px;
+  background: #ffffff;
+  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  animation: show-overlay 0.3s ease-in 0.1s forwards;
+}
+
+.overlay-notify .icon-success,
+.overlay-notify h2 {
+  opacity: 0;
+  transform: scale(0);
+  animation: show-icon 0.3s ease-in 0.5s forwards;
+}
+
+@keyframes show-overlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes show-icon {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
