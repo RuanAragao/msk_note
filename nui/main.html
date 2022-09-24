@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .gui-wrapper {
+      display: flex;
+      background: #fcf9ff;
+      padding: 10px;
+      width: 200px;
+      position: absolute;
+      right: 30px;
+      top: 20%;
+      flex-direction: column;
+      border-radius: 8px;
+      font-family: sans-serif;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .gui-wrapper h1 {
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .gui-wrapper #title {
+      width: 100%;
+      border-bottom: solid 1px lightblue;	
+      outline: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      background-color:#fcf9ff;
+    }
+
+    .gui-wrapper #text {
+      width: 100%;
+      outline: none;
+      border: none;
+      resize: none;
+      background-color: #fcf9ff;
+      background-image: url('images/line.svg');
+      background-attachment: scroll;
+    }
+  </style>
+</head>
+<body>
+  <div class="gui-wrapper">
+    <h1>Bloco de notas</h1>
+    <input type="text" id="title" placeholder="Titulo">
+    <div>
+      <textarea id="text" rows="10" placeholder="Sua anotação"></textarea>
+    </div>
+    <button class="btn-close">Fechar</button>
+    <button class="btn-save">✔ Salvar</button>
+  </div>
+
+  <script>
+    const body = document.querySelector('body');
+    const btnSave = document.querySelector('.btn-save');
+    const btnClose = document.querySelector('.btn-close');
+
+    const title = document.querySelector('#title');
+    const text = document.querySelector('#text')
+
+    body.hidden = true;
+    
+    window.addEventListener('message', function(event) {
+      if (event.data.hidden != undefined) {
+        body.hidden = event.data.hidden
+        return true;
+      };
+
+      if (event.data.done != undefined) {
+        title.value = '';
+        text.value = '';
+        
+        // TODO: add visual feedback
+
+        return true;
+      }
+    });
+
+    btnSave.addEventListener('click', handleButtonSave);
+    btnClose.addEventListener('click', handleButtonClose);
+
+    function handleButtonSave(event) {
+      fetch(`https://${GetParentResourceName()}/save`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          title: title.value,
+          text: text.value
+        })
+      }).then(resp => resp.json()).then(resp => console.log(resp));
+    }
+
+    function handleButtonClose(event) {
+      fetch(`https://${GetParentResourceName()}/close`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        }
+      });
+    }
+  </script>
+</body>
+</html>
