@@ -37,3 +37,36 @@
   background-image: url('../images/line.svg');
   background-attachment: scroll;
 }
+
+.btn {
+  box-sizing: border-box;
+
+  background: rgba(0, 151, 200, 0.1);
+  border: 1px solid #0097C8;
+  border-radius: 4px;
+  cursor: pointer;
+
+  padding: 6px auto;
+}
+.btn:hover,
+.btn:focus {
+  opacity: 0.7;
+}
+
+.btn.btn-close {
+  background: rgba(0, 151, 200, 0.2);
+  border: 1px solid #0097C8;
+  color: #037296;
+}
+
+.btn.btn-save {
+  background: #0097C8;
+  border: 1px solid #0097C8;
+  color: #FFFFFF;
+}
+
+.buttons-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
